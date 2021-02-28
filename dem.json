@@ -1,0 +1,21 @@
+{
+  "modules": [
+    {
+      "protocol": "https",
+      "path": "deno.land/x/denops_std",
+      "version": "v0.2",
+      "files": [
+        "/mod.ts"
+      ]
+    },
+    {
+      "protocol": "https",
+      "path": "deno.land/x/goplayground",
+      "version": "0.1.6",
+      "files": [
+        "/index.ts"
+      ]
+    }
+  ],
+  "aliases": {}
+}
