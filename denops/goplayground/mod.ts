@@ -43,7 +43,14 @@ start(async (denops) => {
   });
 
   await denops.execute(`
-    command! GoPlayRun echomsg denops#request('${denops.name}', 'goPlayRun', [])
+    function! s:ShowAllLines(text) " {{{
+      let lines = split(a:text, '\\n')
+      for line in lines
+        echomsg line
+      endfor
+    endfunction
+
+    command! GoPlayRun call s:ShowAllLines(denops#request('${denops.name}', 'goPlayRun', []))
     command! GoPlayFmt call denops#request('${denops.name}', 'goPlayFmt', [])
     command! GoPlayShare echomsg denops#request('${denops.name}', 'goPlayShare', [])
     command! -nargs=1 GoPlayGet call denops#request('${denops.name}', 'goPlayGet', [<q-args>])
