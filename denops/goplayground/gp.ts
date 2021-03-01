@@ -2,18 +2,14 @@ import { GoPlayground, defaultGoPlaygroundHostName } from "../../vendor/https/de
 
 const gp = new GoPlayground();
 
-export async function run(src: string) {
+export async function run(src: string): Promise<string> {
   const result = await gp.compile(src);
   if (result.Errors !== "") {
     throw new Error(result.Errors)
   }
-  for (const event of result.Events) {
-    if (event.Kind === "stderr") {
-      console.error(event.Message);
-      continue;
-    }
-    console.log(event.Message);
-  }
+  return result.Events
+    .map(({ Message }) => Message)
+    .join("\n");
 }
 
 export async function fmt(src: string): Promise<string> {
@@ -29,3 +25,6 @@ export async function share(src: string): Promise<string> {
   return `${defaultGoPlaygroundHostName}/p/${result}`;
 }
 
+export async function get(key: string): Promise<string> {
+  return await gp.download(key);
+}
