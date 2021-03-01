@@ -14,7 +14,7 @@ start(async (denops) => {
   }
 
   const createBuffer = async (text: string): Promise<void> => {
-    await denops.call("new");
+    await denops.call("execute", "new");
     const lines = text.split("\n");
     await denops.call("setline", "1", lines);
   }
