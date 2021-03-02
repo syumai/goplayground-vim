@@ -21,6 +21,12 @@ Plug 'syumai/goplayground-vim'
 :GoPlayShare     " Share code in current buffer and show shared URL.
 :GoPlayGet <key> " Get code by given The Go Playground's key and open in new buffer.
                  " Example: GoPlayGet lVnPEvROxzH
+
+"Commands for [go2go](https://go2goplay.golang.org/)
+:Go2GoPlayRun   
+:Go2GoPlayFmt   
+:Go2GoPlayShare 
+:Go2GoPlayGet <key>
 ```
 
 ## Development
