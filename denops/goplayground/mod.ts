@@ -1,25 +1,25 @@
-import { start } from "../../vendor/https/deno.land/x/denops_std/mod.ts";
+import { start } from "./vendor/https/deno.land/x/denops_std/mod.ts";
 import { run, fmt, share, get } from "./gp.ts";
 
-start(async (denops) => {
+start(async (vim) => {
   const getLines = async (): Promise<string> => {
-    const lines = await denops.call("getline", 0, "$") as string[];
+    const lines = await vim.call("getline", 0, "$") as string[];
     return lines.join("\n");
   }
 
   const replaceBuffer = async (text: string): Promise<void> => {
-    await denops.call("execute", "%d");
+    await vim.call("execute", "%d");
     const lines = text.split("\n");
-    await denops.call("setline", "1", lines);
+    await vim.call("setline", "1", lines);
   }
 
   const createBuffer = async (text: string): Promise<void> => {
-    await denops.call("execute", "new");
+    await vim.call("execute", "new");
     const lines = text.split("\n");
-    await denops.call("setline", "1", lines);
+    await vim.call("setline", "1", lines);
   }
 
-  denops.register({
+  vim.register({
     async goPlayRun(_: unknown): Promise<unknown> {
       const src = await getLines();
       return run(src);
@@ -42,17 +42,17 @@ start(async (denops) => {
     },
   });
 
-  await denops.execute(`
-    function! s:ShowAllLines(text) " {{{
+  await vim.execute(`
+    function! s:goplayground_show_all_lines(text) " {{{
       let lines = split(a:text, '\\n')
       for line in lines
         echomsg line
       endfor
     endfunction
 
-    command! GoPlayRun call s:ShowAllLines(denops#request('${denops.name}', 'goPlayRun', []))
-    command! GoPlayFmt call denops#request('${denops.name}', 'goPlayFmt', [])
-    command! GoPlayShare echomsg denops#request('${denops.name}', 'goPlayShare', [])
-    command! -nargs=1 GoPlayGet call denops#request('${denops.name}', 'goPlayGet', [<q-args>])
+    command! GoPlayRun call s:goplayground_show_all_lines(denops#request('${vim.name}', 'goPlayRun', []))
+    command! GoPlayFmt call denops#request('${vim.name}', 'goPlayFmt', [])
+    command! GoPlayShare echomsg denops#request('${vim.name}', 'goPlayShare', [])
+    command! -nargs=1 GoPlayGet call denops#request('${vim.name}', 'goPlayGet', [<q-args>])
   `);
 });

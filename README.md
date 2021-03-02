@@ -23,6 +23,15 @@ Plug 'syumai/goplayground-vim'
                  " Example: GoPlayGet lVnPEvROxzH
 ```
 
+## Development
+
+* This plugin is using [dem](https://github.com/syumai/dem) for module version management.
+
+```
+cd denops/goplayground
+dem update https://...@x.x.x # update module
+```
+
 ## Author
 
 syumai
