@@ -1,9 +1,23 @@
 import { GoPlayground, defaultGoPlaygroundHostName } from "./vendor/https/deno.land/x/goplayground/index.ts";
 
-const gp = new GoPlayground();
+const gpOriginal = new GoPlayground();
+const gpGo2Go = new GoPlayground("https://go2goplay.golang.org");
 
-export async function run(src: string): Promise<string> {
-  const result = await gp.compile(src);
+type GPType = 'original' | 'go2go';
+
+function gp(t: GPType): GoPlayground {
+  switch(t) {
+    case 'original':
+      return gpOriginal;
+    case 'go2go':
+      return gpGo2Go;
+  }
+  return gpOriginal;
+}
+
+
+export async function run(t: GPType, src: string): Promise<string> {
+  const result = await gp(t).compile(src);
   if (result.Errors !== "") {
     throw new Error(result.Errors)
   }
@@ -12,19 +26,19 @@ export async function run(src: string): Promise<string> {
     .join("\n");
 }
 
-export async function fmt(src: string): Promise<string> {
-  const result = await gp.format(src, false);
+export async function fmt(t: GPType, src: string): Promise<string> {
+  const result = await gp(t).format(src, false);
   if (result.Error !== "") {
     throw new Error(result.Error)
   }
   return result.Body;
 }
 
-export async function share(src: string): Promise<string> {
-  const result = await gp.share(src);
+export async function share(t: GPType, src: string): Promise<string> {
+  const result = await gp(t).share(src);
   return `${defaultGoPlaygroundHostName}/p/${result}`;
 }
 
-export async function get(key: string): Promise<string> {
-  return await gp.download(key);
+export async function get(t: GPType, key: string): Promise<string> {
+  return await gp(t).download(key);
 }
