@@ -1,4 +1,4 @@
-import { GoPlayground, defaultGoPlaygroundHostName } from "../../vendor/https/deno.land/x/goplayground/index.ts";
+import { GoPlayground, defaultGoPlaygroundHostName } from "./vendor/https/deno.land/x/goplayground/index.ts";
 
 const gp = new GoPlayground();
 
