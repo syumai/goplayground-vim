@@ -1,7 +1,8 @@
 import { GoPlayground, defaultGoPlaygroundHostName } from "./vendor/https/deno.land/x/goplayground/index.ts";
+const go2GoPlaygroundHostName = "https://go2goplay.golang.org";
 
 const gpOriginal = new GoPlayground();
-const gpGo2Go = new GoPlayground("https://go2goplay.golang.org");
+const gpGo2Go = new GoPlayground(go2GoPlaygroundHostName);
 
 type GPType = 'original' | 'go2go';
 
@@ -15,6 +16,15 @@ function gp(t: GPType): GoPlayground {
   return gpOriginal;
 }
 
+function gpHostName(t: GPType): string {
+  switch(t) {
+    case 'original':
+      return defaultGoPlaygroundHostName;
+    case 'go2go':
+      return go2GoPlaygroundHostName;
+  }
+  return defaultGoPlaygroundHostName;
+}
 
 export async function run(t: GPType, src: string): Promise<string> {
   const result = await gp(t).compile(src);
@@ -36,7 +46,7 @@ export async function fmt(t: GPType, src: string): Promise<string> {
 
 export async function share(t: GPType, src: string): Promise<string> {
   const result = await gp(t).share(src);
-  return `${defaultGoPlaygroundHostName}/p/${result}`;
+  return `${gpHostName(t)}/p/${result}`;
 }
 
 export async function get(t: GPType, key: string): Promise<string> {
